@@ -1,0 +1,40 @@
+{% if user.is_authenticated %}
+<form id="logoutForm" action="/logout" method="post" class="navbar-right">
+    {% csrf_token %}
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <div class="btn-group show-on-hover">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <a href="#">Notifications <span class="badge">{{ notifications_shown|length }}</span></a>
+                    <span class="caret"></span> 
+                </button>
+                <ul class="dropdown-menu" role="menu">  
+                    {% for row in notifications_shown %} 
+                            {% if row.notification.code == 'BR' %}
+                            <li><a href="{% url 'borrowRequestsNotification' row.id %}">New borrow request by {{row.user.username}}</a></li>
+                             {% elif row.notification.code == 'AR' %}
+                            <li><a href="{% url 'borrowedToolsNotification' row.id %}">Accepted borrow tool request for {{row.tool_name.tool_name}}</a></li>
+                            {% elif row.notification.code == 'RR' %}
+                            <li><a href="{% url 'borrowedToolsNotification' row.id%}">Rejected borrow tool request for {{row.tool_name.tool_name}}</a></li>
+                            {% elif row.notification.code == 'VR' %}
+                            <li><a href="{% url 'borrowedToolsNotification' row.id %}">Verification of tool return for {{row.tool_name.tool_name}}</a></li>
+                            {% elif row.notification.code == 'TR' %}
+                            <li><a href="{% url 'registeredTools' %}">Tool return request for {{row.tool_name.tool_name}}</a></li>
+                            {% endif %}
+                    {% endfor %} 
+                </ul>
+            </div>
+        </li>
+        <li><span class="navbar-brand">  </span></li>
+        <li><span class="navbar-brand">Hello {{ user.username }}</span></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    </ul>
+</form>
+
+{% else %}
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'login' %}">Log in</a></li>
+</ul>
+
+{% endif %}

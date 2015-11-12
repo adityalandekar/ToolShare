@@ -1,0 +1,48 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+    <h2>Update Share Zone</h2>
+    <h3>Your current zipcode is : {{ zipcode }}</h3>
+    <br />
+
+    {% if hasBorrowed == False and hasLent == False %}
+
+         <form action="" method="post" class="form-vertical"> {% csrf_token %}
+
+            <div class="form-group">
+                <label for="zipcode" class="col-md-2 control-label">Enter your new Zipcode here</label>
+                    <div class="col-md-10">
+                        {{ form.zipcode }}
+                    </div>
+            </div>
+
+            <div class="form-group">
+                 <div class="col-md-offset-2 col-md-10">
+                     <br />
+                      <input type="submit" value="Change Zip" class="btn btn-success" />
+                 </div>
+            </div>
+
+        </form>
+
+    {% else %}
+
+        {% if hasBorrowed == True %}
+            <p>
+                You have borrowed tools. Kindly return them.<br/>
+                You can change the share-zone(zipcode)only when you have returned all tools
+            </p>
+        {% endif %}
+
+        {% if hasLent == True %}
+            <p>
+                You have lent tools and awaiting return them.<br/>
+                You can change the share-zone(zipcode)only when your tools have been returned.<br/>
+                A request has been sent to all borrowers.<br/>
+            </p>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}

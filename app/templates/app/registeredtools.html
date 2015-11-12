@@ -1,0 +1,66 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="row"  id="registerdtools_form">
+    <div class="col-md-8" >
+        <h2>{{ title }}</h2>
+        <section id="registeredToolForm">
+                {% csrf_token %}
+                <br/>
+                <style>
+                    table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 10px;
+                    }
+                    th {
+                    text-align: left;
+                    }
+                </style>
+                <h2>Registered Tools</h2>
+                <br/>
+
+                {% if zipped_data %}
+                    <table style="width:100%">
+                        <table>
+                            <tr>
+                                <th>Tool Name</th>
+                                <th>Status</th>
+                                <th>Tool Location</th>
+                                <th>Category</th>
+                                <th>Special Instruction</th>
+                                <th>Image</th>
+                                <th>Settings</th>
+                                <th>Verify tool return</th>
+    <!--                             <th>Requested by</th>
+                                <th>Confirm</th> -->
+                            </tr>
+
+                            {% for b,r in zipped_data %}
+                            <tr>
+                                <td>{{ b.tool_name }}</td>
+                                <td>{{ b.status }}</td>
+                                <td>{{ b.location }}</td>
+                                <td>{{ b.category }}</td>
+                                <td>{{ b.special_instruction }}</td>
+                                <td><img src="{{ b.image.url }}" width="100" height="100"/></td>
+                                {% if not b.is_borrowed %}
+                                    {% url 'updateTool' b.id as to_url %}
+                                    <td> <a href= {{to_url}} > Update </a> </td>
+                                {% endif %}
+                                <td>{% if r %}<a href={% url 'onApproveReturn' b.id %} > Approve Return </a>{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </table>
+                {% else  %}
+                    <p> Currently you have no registered tools </p>
+                {% endif %}
+
+        </section>
+    </div>
+</div>
+{% endblock %}
+            

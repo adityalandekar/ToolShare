@@ -1,0 +1,57 @@
+
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="row"  id="registerdtools_form">
+    <div class="col-md-8" >
+        <h2>{{ title }}</h2>
+        <section id="registeredToolForm">
+            <style>
+                    table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 10px;
+                    }
+                    th {
+                    text-align: left;
+                    }
+                </style>
+                    {% if requestedTools %}
+                         <table>
+                            <tr>
+                                <h2>Borrow Requests</h2>
+                                <br />
+                                <th>Tool name</th>
+                                <th>Tool location</th>
+                                <th>Requested by</th>
+                                <th>Borrower's message</th>
+                                <th>Date of return</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                            {% for c in requestedTools %}
+                            <tr>
+                                <td>{{ c.tool.tool_name}}</td>
+                                <td>{{ c.tool.location }}</td>
+                                <td>{{ c.borrower_id.username }}</td>
+                                <td>{{ c.borrower_message }}</td>
+                                <td>{{ c.return_date }}</td>
+                                {% url 'onAcceptToolRequest' c.tool.id as to_url %}
+                                <td> <a href={{to_url}}>Accept</a> </td>
+                                {% url 'onRejectToolRequest' c.tool.id as to_url %}
+                                <td> <a href={{to_url}}>Reject</a> </td>
+                                {% ifequal notification.tool_name.id  c.tool.id %}
+                                <td><h3>New</h3></td>
+                                {% endifequal %}
+
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p> Currently you have no borrow requests </p>
+                    {% endif %}
+       </section>
+    </div>
+</div>
+{% endblock %}

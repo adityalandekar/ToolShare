@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+<li><a href="{% url 'registerTool' %}">Register Tool</a></li>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li><a href="{% url 'registeredTools' %}">Registered Tools</a></li>
+        <li><a href="{% url 'borrowedTools' %}">Borrowed Tools</a></li>
+        <li><a href="{% url 'borrowRequests' %}">Borrow Requests</a></li>
+            </ul>
+</li>
+<li><a href="{% url 'updateUserInfo' %}">Update Profile</a></li>
+<!-- <li><a href="{% url 'displayShedTools' %}">Display Share Zone Tools</a></li> -->
+{% endif %}
+
+

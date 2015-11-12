@@ -1,0 +1,52 @@
+
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="row"  id="registerdtools_form">
+    <div class="col-md-8" >
+        <h2>{{ title }}</h2>
+        <section id="registeredToolForm">
+            <style>
+                    table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 10px;
+                    }
+                    th {
+                    text-align: left;
+                    }
+                </style>
+        {% if borrowedTools %}
+                 <table>
+                        <tr>
+                            <h2>Borrowed Tools</h2>
+                            <br \>
+                            <th>Tool name</th>
+                            <th>Tool image</th>
+                            <th>Owner's username</th>
+                            <th>Date of return</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for c in borrowedTools %}
+                        <tr>
+                            <td>{{ c.tool.tool_name }}</td>
+                            <td><img src="{{ c.tool.image.url }}" width="100" height="100"/></td>
+                            <td>{{ c.owner_id.username }}</td>
+                            <td>{{ c.return_date }}</td>
+                            {% url 'onReturnToolRequest' c.tool.id as to_url %}
+                            <td> <a href={{to_url}}>Return</a> </td>
+                            {% ifequal notification.tool_name.id  c.tool.id %}
+                             <td><h3>New</h3></td>
+                            {% endifequal %}
+                        </tr>
+                        {% endfor %}
+                </table>
+        {% else  %}
+             <p> Currently your have not borrowed any tools </p>
+        {% endif %}
+       </section>
+    </div>
+</div>
+{% endblock %}
